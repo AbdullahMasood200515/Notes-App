@@ -1,0 +1,27 @@
+.input-field {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+}
+
+.input-field:hover {
+    border-color: var(--text-muted);
+}
+
+.input-field:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.input-field::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+}
