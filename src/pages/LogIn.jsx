@@ -1,8 +1,12 @@
+import { auth } from "../firebase/firebase";
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import Buttons from "../components/ui/Button/Buttons";
 import Inputs from "../components/ui/Input/Inputs";
 import Forms from "../components/ui/Forms/Forms";
 import { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 import '../components/styles/LogIn.css'
 
 function LogIn() {
@@ -38,6 +42,50 @@ function LogIn() {
         })
     }
 
+    const handleGoogleLogin = async () => {
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+
+            const user = result.user;
+
+            localStorage.setItem("currentUser", JSON.stringify({
+                username: user.displayName,
+                email: user.email,
+                photo: user.photoURL
+            }));
+
+            alert(`Welcome ${user.displayName}`);
+            navigate("/home");
+
+        } catch (error) {
+            console.log(error);
+            alert("Google login failed");
+        }
+    };
+
+    const handleFacebookLogin = async () => {
+        try {
+            const provider = new FacebookAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+
+            const user = result.user;
+
+            localStorage.setItem("currentUser", JSON.stringify({
+                username: user.displayName,
+                email: user.email,
+                photo: user.photoURL
+            }));
+
+            alert(`Welcome ${user.displayName}`);
+            navigate("/home");
+
+        } catch (error) {
+            console.log(error);
+            alert("Facebook login failed");
+        }
+    };
+
     return (
         <div className="auth-page">
             <Forms onSubmit={handleSubmit} autoComplete="off">
@@ -66,6 +114,23 @@ function LogIn() {
                         required />
                 </div>
                 <Buttons text="Login" type="submit" />
+
+                <div className="separator">
+                    <span>OR</span>
+                </div>
+
+                <div className="social-login">
+                    <button type="button" className="social-btn google" onClick={handleGoogleLogin}>
+                        <FcGoogle size={22} />
+                        <span>Continue with Google</span>
+                    </button>
+
+                    <button type="button" className="social-btn facebook" onClick={handleFacebookLogin}>
+                        <FaFacebook size={22} color="#1877F2" />
+                        <span>Continue with Facebook</span>
+                    </button>
+                </div>
+
                 <p>Don't have an account? <Link to={'/signup'}>Signup</Link></p>
             </Forms>
         </div>
